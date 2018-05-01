@@ -1,3 +1,3 @@
 #Procfile
-web: gunicorn app:app -b 0.0.0.0:$PORT --access-logfile -
+web: /usr/bin/supervisord -nc /etc/supervisor/supervisord.conf
 background: python worker.py

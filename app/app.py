@@ -3,6 +3,8 @@ import os
 import signal
 
 from datetime import datetime
+from ddtrace import tracer
+from ddtrace.contrib.flask import TraceMiddleware
 from flask import Flask, redirect, request, render_template
 from flask_wtf import FlaskForm
 from functools import reduce
@@ -21,6 +23,7 @@ from worker import store_message
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'swiggityswooty'
+traced_app = TraceMiddleware(app, tracer, service="enclave-demo", distributed_tracing=False)
 queue = Queue(connection=conn)
 logging.basicConfig(level=logging.DEBUG)
 
